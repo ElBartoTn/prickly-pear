@@ -68,7 +68,8 @@ export class UserService {
       );
     } else {
       const savedUser = await this.userRepository.save(newUser);
-      return this.buildUserRO(savedUser);
+      const isAddContext: boolean = true;
+      return this.buildUserRO(savedUser, isAddContext);
     }
   }
 
@@ -90,13 +91,14 @@ export class UserService {
       const errors = { User: ' not found' };
       throw new HttpException({ errors }, 401);
     }
-
-    return this.buildUserRO(user);
+    const isAddContext: boolean = false;
+    return this.buildUserRO(user, isAddContext);
   }
 
   async findByEmail(email: string): Promise<UserRO> {
     const user = await this.userRepository.findOne({ email: email });
-    return this.buildUserRO(user!);
+    const isAddContext: boolean = false;
+    return this.buildUserRO(user!, isAddContext);
   }
 
   public generateJWT(user: UserEntity) {
@@ -114,15 +116,23 @@ export class UserService {
     );
   }
 
-  private buildUserRO(user: UserEntity) {
-    const userRO = {
-      id: user.id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      token: this.generateJWT(user),
-    };
-
+  private buildUserRO(user: UserEntity, isAddContext: boolean) {
+    let userRO;
+    if (isAddContext) {
+      userRO = {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        token: this.generateJWT(user),
+      };
+    } else
+      userRO = {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      };
     return { user: userRO };
   }
 }
