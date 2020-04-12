@@ -47,9 +47,10 @@ export class UserController {
     return await this.userService.delete(params.slug);
   }
 
-  @UsePipes(new ValidationPipe())
   @Post('users/login')
-  async login(@Body('user') loginUserDto: LoginUserDto): Promise<UserRO> {
+  async login(
+    @Body(new ValidationPipe()) loginUserDto: LoginUserDto,
+  ): Promise<UserRO> {
     const _user = await this.userService.findOne(loginUserDto);
 
     const errors = { User: ' not found' };
