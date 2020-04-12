@@ -18,8 +18,9 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async findAll(): Promise<UserEntity[]> {
-    return await this.userRepository.find();
+  async findAll(): Promise<UserRO[]> {
+    const users = await this.userRepository.find();
+    return this.buildUsersRO(users);
   }
 
   async findOne({ email, password }: LoginUserDto): Promise<UserEntity | null> {
@@ -134,5 +135,12 @@ export class UserService {
         lastName: user.lastName,
       };
     return { user: userRO };
+  }
+  private buildUsersRO(users: UserEntity[]): UserRO[] {
+    let usersRO = new Array<UserRO>();
+    for (let i = 0; i < users.length; i++) {
+      usersRO.push(this.buildUserRO(users[i], false));
+    }
+    return usersRO;
   }
 }
