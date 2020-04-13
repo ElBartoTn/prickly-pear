@@ -29,8 +29,8 @@ export class UserController {
     return await this.userService.findByEmail(email);
   }
 
-  @Get('users')
-  async findAll(@Body(new ValidationPipe())): Promise<UserRO[]> {
+  @Get('users/getAll')
+  async findAll(): Promise<UserRO[]> {
     return await this.userService.findAll();
   }
 

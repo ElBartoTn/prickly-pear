@@ -106,7 +106,6 @@ export class UserService {
     let today = new Date();
     let exp = new Date(today);
     exp.setDate(today.getDate() + 60);
-
     return jwt.sign(
       {
         id: user.id,

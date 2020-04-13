@@ -19,6 +19,7 @@ const users: User[] = [
     password: "test",
     email: "Test@email.com",
     lastName: "User",
+    token: "fake token",
   },
 ];
 
