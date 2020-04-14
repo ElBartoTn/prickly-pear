@@ -5,7 +5,7 @@ import { UserEntity } from './user.entity';
 import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto';
 const jwt = require('jsonwebtoken');
 import { SECRET } from '../config';
-import { UserRO } from './user.interface';
+import { UserDetailsRO } from './user.interface';
 import { validate } from 'class-validator';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { HttpStatus } from '@nestjs/common';
@@ -18,7 +18,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async findAll(): Promise<UserRO[]> {
+  async findAll(): Promise<UserDetailsRO[]> {
     const users = await this.userRepository.find();
     return this.buildUsersRO(users);
   }
@@ -36,7 +36,7 @@ export class UserService {
     return null;
   }
 
-  async create(dto: CreateUserDto): Promise<UserRO> {
+  async create(dto: CreateUserDto): Promise<UserDetailsRO> {
     // check uniqueness of username/email
     const { email, password, firstName, lastName } = dto;
     const qb = await getRepository(UserEntity)
@@ -70,7 +70,7 @@ export class UserService {
     } else {
       const savedUser = await this.userRepository.save(newUser);
       const isAddContext: boolean = true;
-      return this.buildUserRO(savedUser, isAddContext);
+      return this.buildUserRO(savedUser);
     }
   }
 
@@ -85,7 +85,7 @@ export class UserService {
     return await this.userRepository.delete({ email: email });
   }
 
-  async findById(id: number): Promise<UserRO> {
+  async findById(id: number): Promise<UserDetailsRO> {
     const user = await this.userRepository.findOne(id);
 
     if (!user) {
@@ -93,13 +93,13 @@ export class UserService {
       throw new HttpException({ errors }, 401);
     }
     const isAddContext: boolean = false;
-    return this.buildUserRO(user, isAddContext);
+    return this.buildUserRO(user);
   }
 
-  async findByEmail(email: string): Promise<UserRO> {
+  async findByEmail(email: string): Promise<UserDetailsRO> {
     const user = await this.userRepository.findOne({ email: email });
     const isAddContext: boolean = false;
-    return this.buildUserRO(user!, isAddContext);
+    return this.buildUserRO(user!);
   }
 
   public generateJWT(user: UserEntity) {
@@ -116,29 +116,20 @@ export class UserService {
     );
   }
 
-  private buildUserRO(user: UserEntity, isAddContext: boolean) {
+  private buildUserRO(user: UserEntity) {
     let userRO;
-    if (isAddContext) {
-      userRO = {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        token: this.generateJWT(user),
-      };
-    } else
-      userRO = {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      };
-    return { user: userRO };
+    userRO = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
+    return userRO;
   }
-  private buildUsersRO(users: UserEntity[]): UserRO[] {
-    let usersRO = new Array<UserRO>();
+  private buildUsersRO(users: UserEntity[]): UserDetailsRO[] {
+    let usersRO = new Array<UserDetailsRO>();
     for (let i = 0; i < users.length; i++) {
-      usersRO.push(this.buildUserRO(users[i], false));
+      usersRO.push(this.buildUserRO(users[i]));
     }
     return usersRO;
   }

@@ -45,6 +45,6 @@ export class AuthenticationService {
     this.currentUserSubject.next(null);
   }
   public getUsertoken() {
-    if (this.isLoggedIn) return this.currentUserValue["user"].token;
+    if (this.isLoggedIn) return this.currentUserValue.token;
   }
 }

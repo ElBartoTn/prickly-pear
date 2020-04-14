@@ -4,6 +4,16 @@ export interface UserData {
   lastName: string;
 }
 
-export interface UserRO {
-  user: UserData;
+export interface UserDetailsRO {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+export interface LoginResultRO {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  token: string;
 }

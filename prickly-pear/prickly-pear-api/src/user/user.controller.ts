@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UserService } from './user.service';
-import { UserRO } from './user.interface';
+import { UserDetailsRO, LoginResultRO } from './user.interface';
 import { CreateUserDto, UpdateUserDto, LoginUserDto } from './dto';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { User } from './user.decorator';
@@ -25,12 +25,12 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('user')
-  async findMe(@User('email') email: string): Promise<UserRO> {
+  async findMe(@User('email') email: string): Promise<UserDetailsRO> {
     return await this.userService.findByEmail(email);
   }
 
   @Get('users/getAll')
-  async findAll(): Promise<UserRO[]> {
+  async findAll(): Promise<UserDetailsRO[]> {
     return await this.userService.findAll();
   }
 
@@ -55,15 +55,21 @@ export class UserController {
   @Post('users/login')
   async login(
     @Body(new ValidationPipe()) loginUserDto: LoginUserDto,
-  ): Promise<UserRO> {
+  ): Promise<LoginResultRO> {
     const _user = await this.userService.findOne(loginUserDto);
 
     const errors = { User: ' not found' };
     if (!_user) throw new HttpException({ errors }, 401);
 
     const token = await this.userService.generateJWT(_user);
-    const { email, firstName, lastName } = _user;
-    const user = { email, token, firstName, lastName };
-    return { user };
+    const { id, email, firstName, lastName } = _user;
+    const loginResult: LoginResultRO = {
+      id,
+      email,
+      token,
+      firstName,
+      lastName,
+    };
+    return loginResult;
   }
 }
