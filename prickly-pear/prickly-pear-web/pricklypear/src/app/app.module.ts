@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 // used to create fake backend
 import { fakeBackendProvider } from "./_helpers/fake-backend";
+
 import { AppComponent } from "./app.component";
 import { appRoutingModule } from "./app-routing.module";
 import { JwtInterceptor } from "./_helpers/jwt.interceptor";
@@ -22,6 +23,8 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSelectModule } from "@angular/material/select";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @NgModule({
   imports: [
@@ -44,6 +47,8 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     MatSlideToggleModule,
     MatSelectModule,
     MatProgressSpinnerModule,
+    FlexLayoutModule,
+    MatFormFieldModule,
   ],
   declarations: [AppComponent, HomeComponent, LoginComponent],
   providers: [
