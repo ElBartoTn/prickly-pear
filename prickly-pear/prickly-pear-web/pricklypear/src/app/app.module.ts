@@ -26,6 +26,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { HeaderComponent } from './header/header.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   imports: [
@@ -51,7 +52,7 @@ import { HeaderComponent } from './header/header.component';
     FlexLayoutModule,
     MatFormFieldModule,
   ],
-  declarations: [AppComponent, HomeComponent, LoginComponent, HeaderComponent],
+  declarations: [AppComponent, HomeComponent, LoginComponent, HeaderComponent, SignupComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

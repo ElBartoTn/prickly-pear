@@ -1,0 +1,46 @@
+<div class="signup-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <h2>أدخل كل المعلومات</h2>
+      <form class="example-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <mat-card-content>
+          <mat-form-field class="example-full-width">
+            <input
+              type="text"
+              formControlName="firstName"
+              matInput
+              placeholder="إسم"
+            />
+        </mat-form-field>
+            <mat-form-field class="example-full-width">
+            <input
+              type="text"
+              formControlName="lastName"
+              matInput
+              placeholder="لقب"
+            />
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input
+              type="email"
+              formControlName="email"
+              matInput
+              placeholder="البريد الألكتروني"
+            />
+        </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <input
+              type="password"
+              formControlName="password"
+              matInput
+              placeholder="كلمة السر"
+            />
+          </mat-form-field>
+        </mat-card-content>
+        <button mat-stroked-button color="primary" class="btn-block">
+            <h3> إفتح حساب</h3>
+        </button>
+      </form>
+    </mat-card>
+  </div>
+  
